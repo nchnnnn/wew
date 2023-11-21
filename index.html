@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GOLD RUSH</title>
+    <link rel="stylesheet" href="./static.gameclub.ph/GoldRush/css/common.css?v=20221228">
+    
+    <script type="text/javascript" src="./static.gameclub.ph/GoldRush/js/plugins.js?v=20181114"></script>
+    <script type="text/javascript" src="./static.gameclub.ph/GoldRush/js/ui.js?v=20210525"></script>
+    <script type="text/javascript" src="./static.gameclub.ph/GoldRush/js/wheel.js?v=20210504"></script>
+    <script type="text/javascript" src="./static.gameclub.ph/GoldRush/js/number.js?v=20181114"></script>
+    <script type="text/javascript" src="./static.gameclub.ph/GoldRush/js/charge.js?v=20181114"></script>
+    <!--[if lt IE 9]>
+        <script src="/static.gameclub.ph/GoldRush/js/html5shiv.min.js"></script>
+    <![endif]-->
+    <!-- Google tag (gtag.js) -->
+    <script async src=https:/www.googletagmanager.com/gtag/js?id =G-L8W54EDDCV></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-L8W54EDDCV');</script>
+
+    
+</head>
+
+<body>
+        
+
+
+        
+<div class="util-area">
+    <div class="inner">
+        <div class="row">
+	        <div class="col col4">
+		        HELLO,  TwiChy
+	        </div>
+	        <div class="col col8">
+		        <span class="coin-info gold-coin">
+			        <strong>Gold Coin</strong><em id="myGoldCoin"></em>
+			        <a href="#" onclick="chargePopUp();" class="btn btn-sm btn-line">Charge</a>
+		        </span>
+		        <span class="coin-info e-coin">
+			        <strong>e-Coin</strong><em id="myECoin"></em>
+			        <a href="javascript:void(0)" onclick="gnbOpenBill()" class="btn btn-sm btn-line">Charge</a>
+			        <a href="/MyInfo/ExECoinHistory" class="btn btn-sm btn-line">Exchange</a>
+		        </span>
+	        </div>
+        </div>
+    </div>
+</div>        
+			
+	</header>
+	<!--/ header -->
+
+    <!-- container -->
+    
+<script type="text/javascript">
+
+    function openTicketPurchaseInfo(idx, imgpath) {
+        var url;
+        url = "/Wheel/WheelTicketItem";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { idx: idx },
+            success: function (data) {
+                $(".popup-purchase .item").eq(0).find('img').attr("src", "/_Files/GoldRush/Roulette/" + data.value.ImageFileName);
+                $(".popup-purchase .item").eq(0).find('em').text(data.value.ItemName);
+                $(".popup-purchase .coin-dl").eq(0).find('dd').eq(0).text(Number_Price(data.value.ItemPrice) + ' Gold Coin');
+                $(".popup-purchase .coin-dl").eq(0).find('dd').eq(1).text(Number_Price(data.value.CashTotal) + ' Gold Coin');
+                $(".popup-purchase .coin-dl").eq(0).find('dd').eq(2).text(Number_Price(data.value.InsufficientAmount) + ' Gold Coin');
+                $('#purchaseItemIdx').val(idx);
+
+                popup('.popup-purchase');
+
+            }
+        });
+    }
+
+    function PurchaseTicket() {
+        var url;
+        url = "/Wheel/PurchaseTicketItem";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { idx: $('#purchaseItemIdx').val() },
+            success: function (data) {
+                if (data.code != 0) {
+                    alert(data.message);
+                }
+                else {
+                    $(".popup-purchaseComplete").eq(0).find('dd').eq(0).text(data.value.ItemName);
+                    $(".popup-purchaseComplete").eq(0).find('dd').eq(1).text(data.count.AvailableTicket + ' Tickets');
+                    $(".roulette-info").eq(0).find('strong').eq(1).text(data.count.AvailableTicket);
+
+                    myCashInfo(setMyCoinInfo);
+
+                    popup('.popup-purchaseComplete');
+                }
+            }
+        });
+    }
+
+</script>
+<!-- container -->
+<div id="container" class="wheel">  
+    <div class="container-header">
+	    <h1 class="tit-page ir">DASH BOARD</h1>    
+    </div>
+
+    <div class="contents">
+        <div class="inner">
+            <!-- 룰렛 -->
+            <div class="roulette-area">
+                <span class="pin"></span>
+                <span class="roulette-img"><img src="./static.gameclub.ph/GoldRush/images/wheel/638241409670434693dd430106.png" alt="룰렛" id="roulette" /></span>
+                <!-- [D] 스핀버튼 클릭 시 호출
+                    rotation( 아이템수 , 당첨번호 0부터, '' ) /default 팝업 호출
+                    rotation( 아이템수 , 당첨번호 0부터, 'win' )  /고가 아이템일때 팝업호출
+                -->
+                <button type="button" class="btn-start" onclick="rotation(12)">SPIN</button>
+
+               
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- popup -->
+<div class="popup popup-guide">
+    <div class="popup-header">
+        <h3 class="tit-wheel">Lucky Strike Guide</h3>
+    </div>
+    <div class="popup-body">
+        <ul class="bu-type1">
+            <li>Wheel of Fortune is only available for users<br> who have CrossFire characters.</li>
+            <li>Each account can only play 3 times per day and it will be<br> reset at every 00:00 PH Time.</li>
+            <li>The purchased tickets are non-refundable or<br> non-convertible into Gold Coin/e-Coin.</li>
+            <li>The obtained Gold Coins will automatically be added in<br> your total credits.</li>
+            <li>The obtained item can be claimed from<br> <a href="/MyInfo/Storage" target="_blank">My Information > Storage</a>, and the claimed item can<br> be found in the game > Storage.</li>
+        </ul>
+    </div>
+    <div class="popup-footer">
+        <button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+    </div>
+</div>
+<!-- Winning Information win -->
+<div class="popup popup-result win">
+    <div class="popup-header">
+        <h3 class="tit">Winning Information</h3>
+    </div>
+    <div class="popup-body">
+        <p class="result-msg">Congratulations<i>!</i></p>
+        <span class="item">
+            <strong><img src="" alt=""></strong>
+            <em>%아이템명%</em>
+        </span>
+    </div>
+    <div class="popup-footer">
+        <div class="btn-area">
+            <button type="button" class="btn-confirm" onclick="popupClose(this);">Confirm</button>
+        </div>
+        <div class="txt-caution">
+            <ul>
+                <li>* The obtained item can be found in the <a href="/MyInfo/Storage" target="_blank">storage.</a></li>
+                <li>* The obtained ticket can be confirmed instantly.</li>
+            </ul>
+        </div>
+        <button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+    </div>
+</div>
+<!--/ Winning Information win -->
+<!-- Winning Information lose -->
+<div class="popup popup-result lose">
+    <div class="popup-header">
+        <h3 class="tit">Winning Information</h3>
+    </div>
+    <div class="popup-body">
+        <p class="result-msg">Maybe next chance..</p>
+        <span class="item">
+            <strong><img src="" alt=""></strong>
+            <em>Lose Ticket</em>
+        </span>
+    </div>
+    <div class="popup-footer">
+        <div class="btn-area">
+            <button type="button" class="btn-confirm" onclick="popupClose(this);">Confirm</button>
+        </div>
+        <button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+    </div>
+</div>
+<!--/ Winning Information lose -->
+
+<!-- Purchase information -->
+<div class="popup popup-purchase">
+    <div class="popup-header">
+        <h3 class="tit">Purchase information</h3>
+    </div>
+    <div class="popup-body">
+        <span class="item">
+            <strong><img src="" alt=""></strong>
+            <em></em>
+        </span>
+        <dl class="coin-dl">
+            <dt>Price</dt>
+            <dd><strong>40</strong> Gold Coin</dd>
+            <dt>My Gold Coin</dt>
+            <dd><strong>5,000</strong> Gold Coin</dd>
+            <dt class="amount">Insufficient Amount</dt>
+            <dd><strong>0</strong> Gold Coin</dd>
+        </dl>
+    </div>
+    <div class="popup-footer">
+        <div class="btn-area">
+            <button type="button" class="btn-buy" onclick="PurchaseTicket();popupClose(this);">Buy</button>
+            <button type="button" class="btn-cancel" onclick="popupClose(this);">cancel</button>
+        </div>
+        <button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+    </div>
+    <input type="hidden" id="purchaseItemIdx" />
+</div>
+<!--/ Purchase information -->
+<!-- Purchase complete -->
+<div class="popup popup-purchaseComplete">
+    <div class="popup-header">
+        <h3 class="tit">Your purchase has been complete.</h3>
+    </div>
+    <div class="popup-body">
+        <dl>
+            <dt>Purchased Item</dt>
+            <dd></dd>
+            <dt>Current No. of Tickets</dt>
+            <dd></dd>
+        </dl>
+    </div>
+    <div class="popup-footer">
+        <div class="btn-area">
+            <button type="button" class="btn-confirm" onclick="popupClose(this);">Confirm</button>
+        </div>
+        <button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+    </div>
+</div>
+<!--/ Purchase complete -->
+<!--/ container -->
+		
+	<!--/ container -->
+	
+    
+<!-- Gold Coin Charge -->
+<div class="popup popup-charge">
+	<div class="popup-header">
+		<h3 class="tit">Gold Coin Charge<em>(1 e-Coin = 2 Gold Coins )</em></h3>
+		<p></p>
+	</div>
+	<div class="popup-body">
+		<dl class="coin-dl">
+			<dt>MY e-Coin</dt><dd id="cashAmt"></dd>
+			<dt>e-Coin to Convert</dt><dd><input type="text" class="input-coin num_only2" id="chargeAmt"></dd>
+			<dt>Gold Coin to Charge</dt><dd id="chargeGMAmt"></dd>
+		</dl>
+		<dl class="coin-dl after">
+			<dt>Gold Coin After Charge</dt><dd id="afterGMAmt"></dd>
+		</dl>
+	</div>
+	<div class="popup-footer">
+		<div class="btn-area">
+			<button type="button" class="btn-charge" onclick="chargeGoldCoin();">Buy</button>	
+			<button type="button" class="btn-cancel" onclick="popupClose(this);">cancel</button>	
+		</div>
+		<button type="button" class="btn-close" onclick="popupClose(this);">Close</button>
+	</div>
+    <input type="hidden" id="myECoin" />
+    <input type="hidden" id="myGMCoin" />
+</div>
+<!--/ Gold Coin Charge -->
+
+</div>
+               
+</body>
+</html>
